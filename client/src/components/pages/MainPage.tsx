@@ -1,10 +1,10 @@
 import { Container, Grid } from '@mui/material';
 import React from 'react';
 import ChairCard from '../ui/ChairCard';
-import { useChairsContext } from '../../contexts/chairContext';
+import { useAppSelector } from '../../redux/hooks';
 
 export default function MainPage(): JSX.Element {
-  const { chairs } = useChairsContext();
+  const chairs = useAppSelector((store) => store.chair.favoriteChairs);
   return (
     <Container>
       <Grid container>

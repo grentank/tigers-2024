@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React, { useEffect, useMemo, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { ChairsContext } from './chairContext';
 import chairService from '../services/chairService';
-import type { ChairAction, ChairType, NewChairForm } from '../types/chair';
+import type { ChairAction, NewChairForm } from '../types/chair';
 import chairsReducer from './chairsReducer';
 
 type ChairsProviderProps = {

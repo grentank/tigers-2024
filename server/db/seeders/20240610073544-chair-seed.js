@@ -1,8 +1,15 @@
 'use strict';
 
+const { User } = require('../models');
+const { hashSync } = require('bcrypt');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    await User.bulkCreate([
+      { name: 'Alex', email: 'alex@mail.com', hashpass: hashSync('123', 5) },
+      { name: 'Bob', email: 'bob@mail.com', hashpass: hashSync('123', 5) },
+      { name: 'Carl', email: 'carl@mail.com', hashpass: hashSync('123', 5) },
+    ]);
     await queryInterface.bulkInsert(
       'Chairs',
       [
@@ -10,6 +17,7 @@ module.exports = {
           name: 'Лучший стул',
           description: 'Очень лучший стул',
           dimensions: '100x20x50',
+          userId: 1,
           image:
             'https://www.ikea.com/us/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg',
         },
@@ -17,6 +25,7 @@ module.exports = {
           name: 'Стремный стул',
           description: 'Не оч',
           dimensions: '120x20x50',
+          userId: 2,
           image:
             'https://wakefitdev.gumlet.io/img/npl_modified_images/atticus/sofa_WLCHRATCFVBL/sofa_WLCHRATCFVBL_1.jpg?w=732',
         },
@@ -48,6 +57,7 @@ module.exports = {
 Габариты стандартной упаковки Ш*Г*В, мм: 830*590*540
 Объем стандартной упаковки, кубм.: 0.265`,
           dimensions: '120x20x50',
+          userId: 1,
           image: 'https://m.media-amazon.com/images/I/716tq9Y8WOL._AC_SL1500_.jpg',
         },
         {
@@ -62,11 +72,13 @@ module.exports = {
 - Легкость в уходе и сохранении красоты деревянной поверхности.
 Добавьте изысканность и благородство вашему дому с помощью этого великолепного деревянного стула в венском стиле. Он будет отличным выбором для ценителей классического дизайна и элегантности, воплощая атмосферу старинных венских кафе и роскошных салонов.`,
           dimensions: '120x20x50',
+          userId: 2,
           image:
             'https://stoolmarket.ru/upload/resize_cache/iblock/429/450_450_140cd750bba9870f18aada2478b24840a/bsa3kd20gbcy7v9yo0gzzl7jbivm1380.jpg',
         },
         {
           name: 'Стул Eames style Superior белый',
+          userId: 3,
           description: `Интерьерный дизайнерский стул Barneo N-12 Superior
 Ножки стула поставляются в разобранном виде
 Материал сиденья: Пластик PP

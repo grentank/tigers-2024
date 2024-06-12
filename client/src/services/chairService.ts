@@ -3,8 +3,7 @@ import { chairSchema, type ChairType, type NewChairForm } from '../types/chair';
 import axiosClient from './httpClient';
 
 class ChairService {
-  // readonly
-  constructor(private client: AxiosInstance) {}
+  constructor(private readonly client: AxiosInstance) {}
 
   async getAllChairs(): Promise<ChairType[]> {
     // getTodos,

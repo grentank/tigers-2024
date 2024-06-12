@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { userSchema } from './user';
 
 // export type ChairType = {
 //   id: number;
@@ -16,6 +17,7 @@ export const chairSchema = z.object({
   description: z.string(),
   dimensions: z.string(),
   createdAt: z.string().datetime(),
+  User: userSchema
 });
 
 export type ChairType = z.infer<typeof chairSchema>;

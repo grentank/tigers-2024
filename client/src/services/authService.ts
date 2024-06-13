@@ -30,6 +30,14 @@ class AuthService {
     const data = authSchema.parse(res.data);
     return data.accessToken;
   }
+
+  async login(formData: Omit<SignupFormType, 'name'>): Promise<AuthState> {
+    const res = await this.client.post('/auth/login', formData);
+    if (res.status !== 200)
+      return Promise.reject(new Error('Ошибка регистрации (статус не 200)'));
+    const data = authSchema.parse(res.data);
+    return { ...data, user: { ...data.user, status: 'logged' } };
+  }
 }
 
 const authService = new AuthService(httpClient);

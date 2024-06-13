@@ -17,7 +17,7 @@ export const chairSchema = z.object({
   description: z.string(),
   dimensions: z.string(),
   createdAt: z.string().datetime(),
-  User: userSchema
+  User: userSchema,
 });
 
 export type ChairType = z.infer<typeof chairSchema>;
@@ -27,7 +27,7 @@ export type ChairType = z.infer<typeof chairSchema>;
 //   addChairHandler: (event: React.FormEvent<HTMLFormElement>) => Promise<void>;
 // };
 
-export type NewChairForm = Omit<ChairType, 'id' | 'createdAt'>;
+export type NewChairForm = Omit<ChairType, 'id' | 'createdAt' | 'User'>;
 
 export type ChairsStateType = {
   chairs: ChairType[];

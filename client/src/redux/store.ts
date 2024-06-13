@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import chairsReducer from './slices/chairs/chairSlice';
 import authReducer from './slices/auth/authSlice';
+import modalReducer from './slices/modals/modalSlice';
 
 export const store = configureStore({
   reducer: {
     chair: chairsReducer,
     auth: authReducer,
+    modal: modalReducer,
   },
 });
 

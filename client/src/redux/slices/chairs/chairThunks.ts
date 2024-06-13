@@ -17,3 +17,13 @@ export const deleteChairThunk = createAsyncThunk<
   ChairType['id'],
   ChairType['id']
 >('chair/deleteChairThunk', (chairId) => chairService.deleteChairById(chairId));
+
+export const getOneChairThunk = createAsyncThunk<ChairType, ChairType['id']>(
+  'chair/getOneChairThunk',
+  (chairId, {signal}) => chairService.getOneChair(chairId, signal),
+);
+
+export const editOneChairThunk = createAsyncThunk<ChairType, ChairType>(
+  'chair/editOneChairThunk',
+  (chair) => chairService.editOneChair(chair),
+);

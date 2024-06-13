@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -7,18 +7,27 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import { Link } from 'react-router-dom';
 import type { ChairType } from '../../types/chair';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { addToFavorites } from '../../redux/slices/chairs/chairSlice';
+import {
+  addToFavorites,
+  setCurrentChair,
+} from '../../redux/slices/chairs/chairSlice';
 import { deleteChairThunk } from '../../redux/slices/chairs/chairThunks';
+import FavoriteChairIcon from './FavoriteChairIcon';
+import { openModal } from '../../redux/slices/modals/modalSlice';
 
 type ChairCardProps = {
   chair: ChairType;
 };
 
-export default function ChairCard({ chair }: ChairCardProps): JSX.Element {
+function ChairCard({ chair }: ChairCardProps): JSX.Element {
+  console.log('Render', chair.id);
   const dispatch = useAppDispatch();
-  const favorites = useAppSelector((store) => store.chair.favoriteChairs);
+  const clickFavorite = (): void => {
+    dispatch(addToFavorites(chair.id));
+  };
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia sx={{ height: 140 }} image={chair.image} title={chair.name} />
@@ -31,12 +40,8 @@ export default function ChairCard({ chair }: ChairCardProps): JSX.Element {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={() => dispatch(addToFavorites(chair.id))}>
-          {favorites.find((el) => el.id === chair.id) ? (
-            <FavoriteIcon />
-          ) : (
-            <FavoriteBorderOutlinedIcon />
-          )}
+        <Button size="small" onClick={clickFavorite}>
+          <FavoriteChairIcon chairId={chair.id} />
         </Button>
         <Button
           size="small"
@@ -44,7 +49,21 @@ export default function ChairCard({ chair }: ChairCardProps): JSX.Element {
         >
           Удалить
         </Button>
+        <Button component={Link} to={`/chairs/${chair.id}`}>
+          Подробнее
+        </Button>
+        <Button
+          size="small"
+          onClick={() => {
+            dispatch(openModal('edit'));
+            dispatch(setCurrentChair(chair));
+          }}
+        >
+          Редактировать
+        </Button>
       </CardActions>
     </Card>
   );
 }
+
+export default memo(ChairCard);

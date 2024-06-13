@@ -14,3 +14,8 @@ export const checkAuthThunk = createAsyncThunk('auth/checkAuthThunk', () =>
 export const refreshThunk = createAsyncThunk('auth/refreshThunk', () =>
   authService.refresh(),
 );
+
+export const loginThunk = createAsyncThunk<AuthState, Omit<SignupFormType, 'name'>>(
+  'auth/loginThunk',
+  (loginFormData) => authService.login(loginFormData),
+);

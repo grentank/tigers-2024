@@ -16,10 +16,26 @@ chairRouter
     res.status(201).json(chairWithUser);
   });
 
-chairRouter.route('/:id').delete(verifyAccessToken, async (req, res) => {
-  const { id } = req.params;
-  await Chair.destroy({ where: { id } });
-  res.sendStatus(204);
-});
+chairRouter
+  .route('/:id')
+  .delete(verifyAccessToken, async (req, res) => {
+    const { id } = req.params;
+    await Chair.destroy({ where: { id } });
+    res.sendStatus(204);
+  })
+  .get(async (req, res) => {
+    const { id } = req.params;
+    const chair = await Chair.findOne({ where: { id }, include: User });
+    setTimeout(() => {
+      res.json(chair);
+    }, 1000 * id);
+    // res.json(chair);
+  })
+  .put(async (req, res) => {
+    const { id } = req.params;
+    await Chair.update({ ...req.body, User: undefined }, { where: { id } });
+    const newChair = await Chair.findOne({ where: { id }, include: User });
+    res.json(newChair);
+  });
 
 module.exports = chairRouter;

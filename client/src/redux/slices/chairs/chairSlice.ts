@@ -4,7 +4,9 @@ import type { ChairsStateType, ChairType } from '../../../types/chair';
 import {
   addNewChairThunk,
   deleteChairThunk,
+  editOneChairThunk,
   getAllChairs,
+  getOneChairThunk,
 } from './chairThunks';
 
 const initialState: ChairsStateType = {
@@ -39,27 +41,41 @@ export const chairSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    setCurrentChair: (state, action: PayloadAction<ChairType>) => {
+      state.currentChair = action.payload;
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(getAllChairs.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(getAllChairs.fulfilled, (state, action) => {
-      state.chairs = action.payload;
-      state.isLoading = false;
-    });
-    builder.addCase(addNewChairThunk.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(addNewChairThunk.fulfilled, (state, action) => {
-      state.chairs.push(action.payload);
-      state.isLoading = false;
-    });
-    builder.addCase(deleteChairThunk.fulfilled, (state, action) => {
-      state.chairs = state.chairs.filter(
-        (chair) => chair.id !== action.payload,
-      );
-    });
+    builder
+      .addCase(getAllChairs.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllChairs.fulfilled, (state, action) => {
+        state.chairs = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(addNewChairThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addNewChairThunk.fulfilled, (state, action) => {
+        state.chairs.push(action.payload);
+        state.isLoading = false;
+      })
+      .addCase(deleteChairThunk.fulfilled, (state, action) => {
+        state.chairs = state.chairs.filter(
+          (chair) => chair.id !== action.payload,
+        );
+      })
+      .addCase(getOneChairThunk.fulfilled, (state, action) => {
+        state.currentChair = action.payload;
+      })
+      .addCase(editOneChairThunk.fulfilled, (state, action) => {
+        const chairIndex = state.chairs.findIndex(
+          (chair) => chair.id === action.payload.id,
+        );
+        if (chairIndex === -1) return;
+        state.chairs[chairIndex] = action.payload;
+      });
     builder.addMatcher(
       (action: PayloadAction) => action.type.endsWith('/rejected'),
       (state) => {
@@ -70,7 +86,7 @@ export const chairSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { deleteAllChairs, addChair, addToFavorites, clearError } =
+export const { deleteAllChairs, addChair, addToFavorites, clearError, setCurrentChair } =
   chairSlice.actions;
 
 export default chairSlice.reducer;

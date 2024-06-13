@@ -34,6 +34,25 @@ class ChairService {
     }
     return Promise.reject(new Error('неверный статус код удаления'));
   }
+
+  async getOneChair(
+    id: ChairType['id'],
+    signal: AbortSignal,
+  ): Promise<ChairType> {
+    const res = await this.client(`/chairs/${id}`, { signal });
+    if (res.status === 200) {
+      return chairSchema.parse(res.data);
+    }
+    return Promise.reject(new Error('неверный статус код стульев'));
+  }
+
+  async editOneChair(chair: ChairType): Promise<ChairType> {
+    const res = await this.client.put(`/chairs/${chair.id}`, chair);
+    if (res.status === 200) {
+      return chairSchema.parse(res.data);
+    }
+    return Promise.reject(new Error('неверный статус код стульев'));
+  }
 }
 
 const chairService = new ChairService(axiosClient);

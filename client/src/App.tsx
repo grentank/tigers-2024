@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { RouterProvider } from 'react-router-dom';
-import router from './router/router';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { getAllChairs } from './redux/slices/chairs/chairThunks';
-import { useAppDispatch, useAppSelector } from './redux/hooks';
+import { useAppDispatch } from './redux/hooks';
 import SimpleChairSnackbar from './components/ui/SimpleChairSnackbar';
 import { checkAuthThunk } from './redux/slices/auth/authThunks';
-// import ChairsProvider from './contexts/ChairsProvider';
+import useAppRoutes from './router/useAppRoutes';
+import MyModal from './components/ui/MyModal';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -14,43 +14,16 @@ function App(): JSX.Element {
     void dispatch(checkAuthThunk());
   }, []);
 
-  // const status = useAppSelector((store) => store.auth.user.status)
-  // const routes: RouteObject[] = [
-  //   {
-  //     element: <Layout />,
-  //     children: [
-  //       {
-  //         path: '/',
-  //         element: <MainPage />,
-  //       },
-  //       {
-  //         path: '/chairs',
-  //         element: <ChairsPage />,
-  //       },
-  //       {
-  //         path: '/chairs/:chairId',
-  //         element: <OneChairPage />,
-  //       },
-  //       {
-  //         path: '/auth/signup',
-  //         element: (
-  //           <ProtectedRoute
-  //             isAllowed={status === 'guest'}
-  //           >
-  //             <SignupPage />
-  //           </ProtectedRoute>
-  //         ),
-  //       },
-  //     ],
-  //   },
-  // ];
-  
-  // const router = createBrowserRouter(routes);
+  const routes = useAppRoutes();
+  const router = createBrowserRouter(routes);
+
+  // if (status === 'pending') return <h1>Loading</h1>;
 
   return (
     <>
       <RouterProvider router={router} />
       <SimpleChairSnackbar />
+      <MyModal />
     </>
   );
 }

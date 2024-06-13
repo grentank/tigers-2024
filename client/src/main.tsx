@@ -10,11 +10,9 @@ import { store } from './redux/store';
 import { injectStore } from './services/httpClient';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <App />
+  </Provider>,
 );
 
 injectStore(store);

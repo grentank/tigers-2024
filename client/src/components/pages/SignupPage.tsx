@@ -42,16 +42,12 @@ export default function SignupPage(): JSX.Element {
   }, []);
   return (
     <Container>
-      <form
-      // onSubmit={}
-      >
-        <TextField
-          label="test"
-          value={val}
-          onChange={(e) => setVal(e.target.value)}
-        />
-        <SignUpForm onSubmit={onSubmit} inputs={inputs} />
-      </form>
+      <TextField
+        label="test"
+        value={val}
+        onChange={(e) => setVal(e.target.value)}
+      />
+      <SignUpForm onSubmit={onSubmit} inputs={inputs} />
     </Container>
   );
 }

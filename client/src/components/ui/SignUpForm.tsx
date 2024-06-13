@@ -7,6 +7,7 @@ type FormInputType = {
   label: string;
   required: boolean;
   placeholder: string;
+  defaultValue?: string;
 };
 
 type Props = {
@@ -17,7 +18,7 @@ type Props = {
 function SignUpForm({ inputs, onSubmit }: Props): JSX.Element {
   console.log('Form render');
   return (
-    <>
+    <form onSubmit={onSubmit}>
       {inputs.map((input) => (
         <Grid key={input.name} container>
           <Grid item xs={6}>
@@ -27,12 +28,12 @@ function SignUpForm({ inputs, onSubmit }: Props): JSX.Element {
       ))}
       <Grid container>
         <Grid item xs={4}>
-          <Button type="submit" variant="contained" onSubmit={onSubmit}>
+          <Button type="submit" variant="contained">
             Зарегистрироваться
           </Button>
         </Grid>
       </Grid>
-    </>
+    </form>
   );
 }
 
